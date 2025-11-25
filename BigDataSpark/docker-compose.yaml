@@ -26,6 +26,7 @@ services:
     volumes:
       - ./scripts:/opt/spark-apps
       - ./jars:/opt/jars
+      - ./target:/opt/java-apps
     depends_on:
       - postgres
     command: bash -c "/opt/spark/sbin/start-master.sh && tail -f /dev/null"
@@ -42,6 +43,7 @@ services:
     volumes:
       - ./scripts:/opt/spark-apps
       - ./jars:/opt/jars
+      - ./target:/opt/java-apps
     command: bash -c "/opt/spark/sbin/start-worker.sh spark://spark-master:7077 && tail -f /dev/null"
 
   clickhouse:
