@@ -23,3 +23,16 @@ docker-compose up -d
 ```bash
 docker exec -it jobmanager /opt/flink/bin/flink run -c ru.lunidep.flinkjob.KafkaToPostgresJob /opt/flink-job/flink-job-1.0.0.jar
 ```
+
+## Визуализация работы системы
+
+**Docker Containers** - управление всей инфраструктурой через Docker Desktop:
+![Docker Management](img_to_report/docker-ui.jpg)
+
+### Мониторинг потоковой обработки
+
+**Flink Web UI** (`http://localhost:8081`) - отслеживание выполнения джоб и метрик потоковой обработки:
+![Flink Dashboard](img_to_report/flink-ui.jpg)
+
+**Kafka UI** (`http://localhost:8080`) - мониторинг топиков, потребления сообщений и lag:
+![Kafka Monitoring](img_to_report/kafka-ui.jpg)
