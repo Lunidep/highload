@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: source-postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - './postgres-scripts/:/docker-entrypoint-initdb.d/'
+      - './data:/data'
+    networks:
+      - trino-network
+
+  source-clickhouse:
+    image: yandex/clickhouse-server:latest
+    container_name: source-clickhouse
+    ports:
+      - '8123:8123'
+    environment:
+      CLICKHOUSE_DB: default
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: default
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+    volumes:
+      - './clickhouse-scripts/source-scripts/:/docker-entrypoint-initdb.d/'
+      - './data:/var/lib/clickhouse/user_files'
+    networks:
+      - trino-network
+
+  etl-clickhouse:
+    image: yandex/clickhouse-server:latest
+    container_name: etl-clickhouse
+    ports:
+      - '8124:8123'
+    environment:
+      CLICKHOUSE_DB: default
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: default
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+    volumes:
+      - './clickhouse-scripts/etl-scripts/:/docker-entrypoint-initdb.d/'
+    networks:
+      - trino-network
+
+  reposts-clickhouse:
+    image: yandex/clickhouse-server:latest
+    container_name: reports-clickhouse
+    ports:
+      - '8125:8123'
+    environment:
+      CLICKHOUSE_DB: default
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: default
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+    volumes:
+      - './clickhouse-scripts/reports-scripts/:/docker-entrypoint-initdb.d/'
+    networks:
+      - trino-network
+
+  trino-coordinator:
+    image: trinodb/trino:latest
+    container_name: trino-coordinator
+    ports:
+      - '8080:8080'
+    volumes:
+      - './trino-config:/etc/trino'
+      - './trino-scripts:/scripts'
+    networks:
+      - trino-network
+    depends_on:
+      - postgres
+      - source-clickhouse
+      - etl-clickhouse
+
+networks:
+  trino-network:
+    driver: bridge
