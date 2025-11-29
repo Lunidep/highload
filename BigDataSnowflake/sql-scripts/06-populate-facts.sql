@@ -10,9 +10,14 @@ SELECT c.customer_id,
 FROM main_data m
          JOIN customers c ON m.customer_email = c.email
          JOIN sellers s ON m.seller_email = s.email
-         JOIN products p ON m.product_name = p.name AND m.product_category = p.category
-         JOIN stores st ON m.store_name = st.name AND m.store_city = st.city
-         JOIN suppliers sp ON m.supplier_name = sp.name AND m.supplier_email = sp.email
-LIMIT 1000 OFFSET 10;
+         JOIN products p ON m.product_name = p.name
+    AND m.product_category = p.category
+    AND m.product_price = p.price
+    AND m.product_release_date = p.release_date
+    AND m.product_expiry_date = p.expiry_date
+         JOIN stores st ON m.store_name = st.name
+    AND m.store_city = st.city
+         JOIN suppliers sp ON m.supplier_name = sp.name
+    AND m.supplier_email = sp.email;
 
 DROP TABLE main_data;
