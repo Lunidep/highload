@@ -20,7 +20,7 @@ docker-compose up -d
 docker exec -it spark-master /opt/spark/bin/spark-submit --master spark://spark-master:7077 --deploy-mode client --class ru.lunidep.PopulatePostgres /opt/java-apps/spark-postgres-clickhouse-1.0-SNAPSHOT.jar
 
 # Генерация отчетов в ClickHouse
-docker exec -it spark-master /opt/spark/bin/spark-submit --master spark://spaster:7077 --deploy-mode client --class ru.lunidep.ReportsClickHouse /opt/java-apps/spark-postgres-clickhouse-1.0-SNAPSHOT.jar
+docker exec -it spark-master /opt/spark/bin/spark-submit --master spark://spark-master:7077 --deploy-mode client --class ru.lunidep.ReportsClickHouse /opt/java-apps/spark-postgres-clickhouse-1.0-SNAPSHOT.jar
 ```
 
 ## Соответствие отчетов требованиям лабораторной работы
