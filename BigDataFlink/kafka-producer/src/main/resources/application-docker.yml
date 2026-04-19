@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: kafka-producer
+  kafka:
+    bootstrap-servers: kafka:9092
+
+app:
+  data-directory: /data

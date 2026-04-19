@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: kafka-producer
+  kafka:
+    bootstrap-servers: localhost:29092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      retries: 10
+      properties:
+        max.block.ms: 60000
+        batch.size: 16384
+        linger.ms: 1
+        buffer.memory: 33554432
+    template:
+      default-topic: csv-data-topic
+
+app:
+  data-directory: G:/zagruzki/ilya/mai/highload/BigDataFlink/data
+
+logging:
+  level:
+    com.example.csvreader: INFO
+    org.springframework: WARN
+    org.springframework.kafka: DEBUG
